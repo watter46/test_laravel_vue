@@ -1,4 +1,4 @@
-FROM node:16-alpine as node
+FROM node:14-alpine as node
 
 FROM php:7.4-fpm-alpine
 
@@ -8,10 +8,9 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 # composer install
 COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
-# middleware install
+# install middleware 
 RUN apk add --update --no-cache oniguruma-dev git unzip libgcc && \
-		apk add --no-cache --virtual g++ && \
-		apk add --no-cache libstdc++ && \
+		apk add --no-cache make gcc g++ python2 && \
 		docker-php-ext-install pdo_mysql mysqli mbstring
 
 # non-root-user create
